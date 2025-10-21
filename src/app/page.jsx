@@ -1,14 +1,22 @@
-// Home page component
+
+import React from "react";
+import { Hero } from "@/components/Hero";
+import { FeaturesSection } from "@/components/blocks/features-section";
+import { JoinNowSection } from "@/components/JoinNowSection";
+import { TestimonialSection } from "@/components/TestimonialSection";
+import { OurTeamSection } from "@/components/OurTeam";
+
 export default function Home() {
+
   return (
-    <main className="min-h-screen">
-      <h1 className="text-4xl font-bold text-center mt-20">
-        Welcome to Test.AI
-      </h1>
-      <p className="text-center mt-4 text-muted-foreground">
-        AI-Powered Testing Platform
-      </p>
-      {/* TODO: Add hero section, features, and call-to-action */}
-    </main>
-  )
+    <div
+      className="flex flex-col min-h-screen bg-white dark:bg-black text-gray-800 dark:text-white font-['Roboto']"
+    >
+      <Hero />
+      <FeaturesSection />
+      <JoinNowSection />
+      <TestimonialSection />
+      <OurTeamSection />
+    </div>
+  );
 }
