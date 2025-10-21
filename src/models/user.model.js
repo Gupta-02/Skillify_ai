@@ -1,28 +1,30 @@
-// User model
-import mongoose from 'mongoose'
 
-const UserSchema = new mongoose.Schema({
+import mongoose from 'mongoose';
+
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please provide a name'],
+    required: [true, 'Name is required'],
   },
   email: {
     type: String,
-    required: [true, 'Please provide an email'],
+    required: [true, 'Email is required'],
     unique: true,
-    lowercase: true,
+    match: [/.+\@.+\..+/, 'Please enter a valid email'],
   },
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
+    required: [true, 'Password is required'],
   },
   role: {
     type: String,
     enum: ['student', 'working professional'],
+    required: [true, 'Role is required'],
     default: 'student',
-  },
-}, {
-  timestamps: true,
-})
+  }
+}, { timestamps: true });
 
-export default mongoose.models.User || mongoose.model('User', UserSchema)
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+
+export default User;
+
