@@ -1,4 +1,4 @@
-# 🚀 Test.AI - AI-Powered Testing Platform
+# Skillify.AI - AI-Powered Testing Platform
 
 [![GitHub](https://img.shields.io/badge/GitHub-Gupta--02/Skillify__ai-blue?logo=github)](https://github.com/Gupta-02/Skillify_ai)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.5-black?logo=next.js)](https://nextjs.org/)
