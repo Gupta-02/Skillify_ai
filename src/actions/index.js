@@ -1,43 +1,59 @@
-// User-related server actions
-'use server'
+"use server";
 
-import dbConnect from '@/lib/dbConnect'
-import User from '@/models/user.model.js'
-import bcrypt from 'bcryptjs'
+import { generateQuestions } from "@/lib/gemini";
+import Test from "@/models/Test";
+import User from "@/models/user.model";
+import dbConnect from "@/lib/dbConnect";
 
-export async function createUser(userData) {
+export async function createTest(testDetails) {
   try {
-    await dbConnect()
-    
-    // Check if user already exists
-    const existingUser = await User.findOne({ email: userData.email })
-    if (existingUser) {
-      return { error: 'User already exists' }
+    await dbConnect();
+
+    const questions = await generateQuestions(testDetails);
+
+    if (!Array.isArray(questions) || questions.length === 0) {
+      throw new Error("Invalid questions generated");
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(userData.password, 10)
+    const newTest = new Test({
+      ...testDetails,
+      questions: questions,
+    });
 
-    // Create new user
-    const user = await User.create({
-      ...userData,
-      password: hashedPassword,
-    })
+    await newTest.save();
 
-    return { success: true, userId: user._id.toString() }
+    return { success: true, testId: newTest._id.toString() };
   } catch (error) {
-    console.error('Error creating user:', error)
-    return { error: 'Failed to create user' }
+    console.error("Error creating test:", error);
+    return { success: false, error: error.message };
   }
 }
 
-export async function getUserById(userId) {
+export async function getTestById(testId) {
   try {
-    await dbConnect()
-    const user = await User.findById(userId).select('-password')
-    return { success: true, user: JSON.parse(JSON.stringify(user)) }
+    await dbConnect();
+    const test = await Test.findById(testId);
+    if (!test) {
+      return null;
+    }
+
+    return JSON.parse(JSON.stringify(test));
   } catch (error) {
-    console.error('Error fetching user:', error)
-    return { error: 'Failed to fetch user' }
+    console.error("Error fetching test:", error);
+    return null;
+  }
+}
+export async function getUserDetails(userId) {
+  try {
+    await dbConnect();
+    const user = await User.findById(userId);
+    if (!user) {
+      return null;
+    } else {
+      return JSON.parse(JSON.stringify(user));
+    }
+  } catch (err) {
+    console.error("Error fetching test:", err);
+    return null;
   }
 }
